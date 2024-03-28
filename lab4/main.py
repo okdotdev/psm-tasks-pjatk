@@ -146,8 +146,8 @@ axs[0, 0].set_title('Ruch liniowy Sfery (sx)')
 
 axs[1, 0].plot(times, values_Sy_sphere)
 axs[1, 0].set_xlabel('Czas (s)')
-axs[1, 0].set_ylabel('sy Kuli (m)')
-axs[1, 0].set_title('Ruch liniowy kuli (sy)')
+axs[1, 0].set_ylabel('sy Sfery (m)')
+axs[1, 0].set_title('Ruch liniowy Sfery (sy)')
 
 # Kula
 axs[0, 1].plot(times, values_Sx_ball)
