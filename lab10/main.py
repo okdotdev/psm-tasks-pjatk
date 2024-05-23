@@ -1,7 +1,5 @@
-import turtle
-import sys
-
-sys.setrecursionlimit(10000)
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class LSystem:
@@ -12,7 +10,7 @@ class LSystem:
         }
         self.starting_word = starting_word
         self.iteration_limit = iteration_limit
-        self.angle = angle
+        self.angle = np.radians(angle)
         self.length = length
 
     def set_rules(self, word):
@@ -28,41 +26,36 @@ class LSystem:
         return word
 
     def show(self, word):
-        screen = turtle.Screen()
-        turtle.speed("fastest")
-        turtle.bgcolor("white")
-        turtle.color("green")
-        turtle.width(3)
-        turtle.hideturtle()
-        turtle.penup()
-        turtle.goto(0, 0)
-        turtle.pendown()
-        turtle.setheading(90)
-
+        positions = [(0, 0)]
+        angles = [np.pi / 2]
         stack = []
+
+        x, y = 0, 0
+        angle = np.pi / 2
+
         for char in word:
             if char == "F":
-                turtle.forward(self.length)
+                x += self.length * np.cos(angle)
+                y += self.length * np.sin(angle)
+                positions.append((x, y))
             elif char == "+":
-                turtle.left(self.angle)
+                angle += self.angle
             elif char == "-":
-                turtle.right(self.angle)
+                angle -= self.angle
             elif char == "[":
-                position = turtle.position()
-                angle = turtle.heading()
-                stack.append((position, angle))
+                stack.append((x, y, angle))
             elif char == "]":
-                position, angle = stack.pop()
-                turtle.penup()
-                turtle.setposition(position)
-                turtle.setheading(angle)
-                turtle.pendown()
-            screen.mainloop()
+                x, y, angle = stack.pop()
+
+        positions = np.array(positions)
+        plt.plot(positions[:, 0], positions[:, 1], color='green', linewidth=1)
+        plt.axis('equal')
+        plt.axis('off')
+        plt.show()
 
     def run(self):
         end_word = self.generate_word()
         self.show(end_word)
-        turtle.done()
 
 
 if __name__ == "__main__":
